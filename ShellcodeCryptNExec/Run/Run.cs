@@ -23,7 +23,7 @@ namespace ShellcodeCryptNExec {
             GenerateInMemory = false,
             GenerateExecutable = true,
             OutputAssembly = @Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\PREFIX-" + DateTime.Now.ToString("ddMMyyyy-HHmmss" + ".exe"),
-            CompilerOptions = "/platform:x86"
+            CompilerOptions = "/platform:x86 /target:winexe"
         };
 
         static void Main(string[] args) {

